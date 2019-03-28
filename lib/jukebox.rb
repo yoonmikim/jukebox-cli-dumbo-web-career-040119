@@ -11,13 +11,11 @@ songs = [
 ]
 
 def help
-  if gets.chomp == 'help'
     puts "I accept the following commands:
   - help : displays this help message
   - list : displays a list of songs you can play
   - play : lets you choose a song to play
   - exit : exits this program"
-  end
 end
 
 
@@ -35,42 +33,48 @@ def list(songs)
 9. Amos Lee - Keep It Loose, Keep It Tight"
 
   songs.each_with_index do |el, i|
-    if gets.chomp == (i+1) 
-      puts el
-    end
+      puts "#{i+1}. #{el}"
   end
 end
 
 
 def play(songs)
   puts "Please enter a song name or number:"
-  gets.chomp
-  if (my_songs.keys.include?(gets.chomp))
-    puts "Playing #{my_songs[gets.chomp}"
+  playing_song = gets.chomp
+  if (1..9).to_a.include?(playing_song.to_i)
+    puts "Playing #{songs[playing_song.to_i - 1]}"
+    system 'open <path to audio file>'
+  else if (songs.include?(playing_song))
+    puts "Playing #{playing_song}"
+    system 'open <path to audio file>'
   else
     puts "Invalid input, please try again"
   end
 end
 
 def exit_jukebox
-  puts "Goodbye" if (gets.chomp == 'exit')
+  puts "Goodbye"
 end
 
 def run(my_songs)
-  until gets.chomp == 'exit'
+  input = ''
+  
+  until input == 'exit'
   help
   puts "Please enter a command:"
-  gets.chomp
-    if gets.chomp == 'list'
-      list
-    else if gets.chomp == 'play'
-      play
-    else if gets.chomp == 'exit' 
+  input == gets.chomp
+    if input == 'list'
+      list(songs)
+    else if input == 'play'
+      play(songs)
+    else if input == 'exit' 
       exit_jukebox
       break
+    else if input == 'help'
+      help
     end
   end
-  if gets.chomp == 'exit' 
+  if input == 'exit' 
       exit_jukebox
   end
 end

@@ -14,13 +14,11 @@
 
 def help
   #this method should be the same as in jukebox.rb
-  if gets.chomp == 'help'
     puts "I accept the following commands:
   - help : displays this help message
   - list : displays a list of songs you can play
   - play : lets you choose a song to play
   - exit : exits this program"
-  end
 end
 
 
@@ -31,9 +29,7 @@ def list(my_songs)
   puts my_songs
   
   my_songs.each_with_index do |el, i|
-    if gets.chomp == (i+1) 
-      puts el
-    end
+      puts "#{i+1}. #{el}"
   end
 end
 
@@ -46,11 +42,12 @@ def play(my_songs)
   #if it isn't, tell them their choice is invalid
   #if it is, play the song using the system 'open <file path>' syntax
   #get the file path of the song by looking it up in the my_songs hash
-  puts "Please enter a song name or number:"
-  gets.chomp
-  if (my_songs.keys.include?(gets.chomp))
-    puts "Playing #{gets.chomp}"
-    my_songs[gets.chomp]
+  puts "Please enter a song name"
+  playing_song = gets.chomp
+  if (my_songs.keys.include?(playing_song))
+    puts "Playing #{playing_song}"
+    my_songs[playing_song]
+    system 'open ' << my_songs[playing_song]
   else
     puts "Invalid input, please try again"
   end
@@ -58,25 +55,30 @@ end
 
 def exit_jukebox
   #this method is the same as in jukebox.rb
-  puts "Goodbye" if (gets.chomp == 'exit')
+  puts "Goodbye"
 end
 
 def run(my_songs)
   #this method is the same as in jukebox.rb
+  input = ''
   until gets.chomp == 'exit'
   help
   puts "Please enter a command:"
-  gets.chomp
-    if gets.chomp == 'list'
+  input = gets.chomp
+    case input
+    when 'list'
       list
-    else if gets.chomp == 'play'
+    when 'play'
       play
-    else if gets.chomp == 'exit' 
+    when 'exit' 
       exit_jukebox
       break
+    when 'help'
+      help
+    else help
     end
   end
-  if gets.chomp == 'exit' 
+  if input == 'exit' 
       exit_jukebox
   end
 end
